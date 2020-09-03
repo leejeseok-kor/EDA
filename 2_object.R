@@ -3,6 +3,10 @@
 #month.abb
 #등등
 
+#순서형 범주, 명목형 범주
+#ordered factor(순서형)
+#order <- ordered(c(1,2,3,2,3,2), labels = c('Teens','Twenties','Thirties'))
+
 #factor활용 2way table
 # name = c(1,2,3,2,3,1)
 # surname = factor(name, labels = c('Kim','Lee','Park'))
@@ -71,6 +75,7 @@ seq(5)
 rep(c('A','B','C'),3)
 rep(1:3,each = 3)
 
+rep(c('A','B','C'), c(3,2,1)) #벡터 입력시 each가 default가 됨
 
 data1 = scan()
 scan(what = '')
@@ -343,3 +348,111 @@ tapply(name, ages, function(x) length(x)/ length(ages))
 year = c(1,2,3,2,3,3,2,1,2,1)
 pencil = c(5,2,3,4,5,2,5,3,5,6)
 tapply(pencil, year, mean)
+
+#2.7 List
+#서로 다른 자료형을 갖는 원소들을 포함 할 수 있음 + 길이도 다를 수 있음
+mat1 = matrix(1:4, nrow = 2)
+list1 = list('A',1:8,mat1)
+list1
+student = list(student.name = c('Jake','Jason','Ashley'),
+               student.cnt = 3,
+               student.age = c(20,21,19))
+student
+mode(list1)
+length(list1)
+
+names(list1)
+names(student)
+
+list1
+list1[[2]]
+list1[[3]][2]
+list1[[3]][2,2]
+student$student.name
+student['student.name']
+student[['student.name']]
+
+names(list1) = c('character','vector','matrix')
+list1
+list1[[4]] = letters[1:4]
+list1
+list1[5] = list(c(T,F))
+list1
+
+#List의 성분으로 list이용
+Jake = list(first.name = 'Jake', middle.name = 'J',last.name = 'Lee', age = 20, sex = 'M', grade = 'A')
+Jason = list(first.name = 'Jason', middle.name = NULL, last.name = 'Cui', age = 21, sex = 'M', grade = 'B')
+Ashley = list(first.name = 'Ashley', middle.name = NULL, last.name = 'Choi', age = 19, sex = 'F', grade = 'A-')
+my.class = list(student.list = list(st1 = Jake, st2 = Jason, st3 = Ashley))
+my.class
+my.class$cnt = length(my.class$student.list)
+my.class
+mode(my.class$student.list)
+
+#unlist
+student
+unlist(student)
+
+#DataFrame 자료분석에 용이
+#matrix, list의 장점 이용
+#행 -> observation 열 -> variables
+
+no = 1:5
+name = c('LEE','PARK','SO','KIM','YOON')
+age = c(55,47,35,26,29)
+sex = c('M','F','M','F','M')
+data1 <- data.frame(no, name, age, sex)
+data1 <- data1[,-1]
+data1
+str(data1)
+col1 = data1[,1]
+col2 = data1[,2]
+col3 = data1[,3]
+col1
+class(col1)
+class(col2)
+class(col3)
+class(data1)
+mode(data1)
+names(data1)
+rownames(data1)
+dim(data1)
+colnames(data1)
+#dataframe에서 colnames = names
+nrow(data1)
+ncol(data1)
+dim(data1)
+
+data1[data1$name == 'LEE', ]
+data1$age
+data1[3,2] #3행의 2열
+data1[[2]][3] #2열의 3번째 원소
+#data1[3,2] = data1[[2]][3]
+a = c(NA, 41, 'F')
+data2 <- rbind(data1, a)
+class(data2$age)
+class(data1$age)
+data2$age <- as.numeric(data2$age) #data2의 age열을 수치형으로 변경
+class(data2$age)
+df1 = data.frame(name = c('LEE','PARK','SO','KIM','YOON'),
+                 age = c(55,47,35,26,29),
+                 sex = c('F','M','M','F','M'))
+df1
+df2 = data.frame(name = c('LEE','SO','LEE','YOON','PARK'),
+                 married = c(F,T,T,F,T))
+df2
+#merge 중복 변수를 기준으로 중복으로 존재하는 요소만 합침// 
+merge(df1, df2)
+df3 = data.frame(surname = c('KIM','SO','LEE','YOON','PARK'),
+                 marries = c(F,T,T,F,T))
+#기준 변수를 각 dataframe에 대해 직접 지정
+merge(df1, df3, by.x = 'name', by.y = 'surname')
+
+df4 = data.frame(name = c('LEE','PARK','SO','KIM','YOON'),
+                 sex = c('M','M','F','F','M'),
+                 married = c(T,T,F,T,F))
+df4
+df1
+merge(df1,df4)
+#중복 요소만 표현하지않고 전부 표현
+merge(df1, df4, all = T)
