@@ -456,3 +456,20 @@ df1
 merge(df1,df4)
 #중복 요소만 표현하지않고 전부 표현
 merge(df1, df4, all = T)
+
+
+#$, [[]]
+#간단한 회귀분석 이용
+x <- rnorm(10,0,1)
+y <- 1.5 + 2*x + rnorm(10,0,1)
+plot(x,y)
+
+res <- lm(y~x)
+res
+abline(res)
+str(res)
+names(res)
+#res -> 12개의 성분을 갖는 list
+res$coefficients
+res[[1]]
+res[[2]]
